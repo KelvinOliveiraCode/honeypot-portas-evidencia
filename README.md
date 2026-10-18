@@ -1,89 +1,83 @@
 # honeypot-portas-evidencia
 
-## Português
+![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)   ![status: concluido](https://img.shields.io/badge/status-concluido-green)   ![licenca: MIT](https://img.shields.io/badge/licenca-MIT-blue)
 
-### Descrição
+## Resumo
 
-Honeypot TCP de porta falsa escrito em Python com apenas a biblioteca padrão (`socket`, `hashlib`). Ele escuta uma porta configurada, aceita conexões de qualquer cliente, grava cada conexão em um arquivo de evidência (JSON-lines) e anexa a cada registro um hash SHA-256 calculado sobre carimbo de data/hora, endereço e porta do cliente, porta local e dados recebidos. O hash permite comprovar depois que o arquivo de evidência não foi adulterado.
+Projeto em Python desenvolvido como estudo de engenharia de software. Projeto funcional, honeypot-portas-evidencia
 
-### Como usar
+## Problema / por que existe
 
-Execução direta com Python (sem dependências externas):
+O projeto aborda um recorte pratico e automatiza uma tarefa que, feita manualmente, e repetitiva e propensa a erro. O foco esta em transformar dados ou processos em saida confiavel, com codigo legivel e testavel.
 
-```
-python -m honeypot_portas_evidencia --port 2222 --log evidence.log
-```
+## Arquitetura
 
-Opções:
+O codigo esta organizado por responsabilidade:
 
-- `--host`: endereço a vincular (padrão: `127.0.0.1`)
-- `--port`: porta falsa a escutar (padrão: `2222`)
-- `--log`: caminho do arquivo de evidência (padrão: `evidence.log`)
-- `--timeout`: tempo de leitura por conexão, em segundos (padrão: `2.0`)
+- Entrada: leitura de arquivo, API, entrada do usuario ou captura de dados (dependendo do modulo).
+- Processamento: funcoes puras ou classes que aplicam regras de negocio, transformacao ou analise sobre os dados de entrada.
+- Saida: gravacao de arquivo, impressao em terminal, resposta HTTP ou geracao de relatorio.
 
-O honeypot roda até receber `Ctrl+C` (ou `SIGTERM`), quando grava os registros acumulados e encerra.
+Quando aplicavel, a aplicacao separa a camada de acesso a dados da camada de logica de negocio, para que mudar a origem dos dados nao exija reescrever as regras.
 
-### Testes
+## Tecnologias
 
-A suíte é pytest e roda apenas com a biblioteca padrão do Python:
+- Python 3.x
+- (nenhum informado no repositorio)
 
-```
-uv run pytest -q
-```
+- Sem CI configurado neste repositorio.
 
-Resultado: 12 aprovados em 0,29 s.
+O repositorio contem testes automatizados.
 
-Os testes cobrem: determinismo do hash SHA-256, detecção de alteração em qualquer campo, gravação e leitura do arquivo de evidência, verificação de integridade (válido → passa; hash ou dados adulterados → falha), alocação de porta, captura de conexões reais em localhost, multiplas conexões e uso como gerenciador de contexto.
+## O que faz
 
-### Licença
+Projeto funcional, honeypot-portas-evidencia
 
-MIT
+## Como rodar
 
-### Autor
-
-Kelvin Oliveira
-
----
-
-## English
-
-### Description
-
-TCP honeypot with a fake open port, written in Python using only the standard library (`socket`, `hashlib`). It listens on a configured port, accepts connections from any client, records each connection in a JSON-lines evidence file, and attaches to every record a SHA-256 hash computed over the UTC timestamp, client address and port, local port, and received data. The hash makes it possible to prove later that the evidence file was not tampered with.
-
-### How to use
-
-Run directly with Python (no external dependencies):
+Requisitos: Python 3.x instalado.
 
 ```
-python -m honeypot_portas_evidencia --port 2222 --log evidence.log
+# instalar dependencias (se houver requirements.txt)
+pip install -r requirements.txt
+
+# executar
+python main.py
+
+# executar testes
+pytest
 ```
 
-Options:
+## Estrutura do projeto
 
-- `--host`: address to bind (default: `127.0.0.1`)
-- `--port`: fake port to listen on (default: `2222`)
-- `--log`: path to the evidence file (default: `evidence.log`)
-- `--timeout`: read timeout per connection, in seconds (default: `2.0`)
+- src/ (4 arquivo(s))
+- tests/ (3 arquivo(s))
+- .gitignore, BRIEF.md, pyproject.toml, README.en.md, README.md
 
-The honeypot runs until `Ctrl+C` (or `SIGTERM`), at which point it flushes the accumulated records and exits.
 
-### Tests
+## Trade-offs e decisões
 
-The suite is pytest and needs only the Python standard library:
+- Biblioteca padrao sempre que possivel, dependencias externas so quando o ganho justifica a manutencao.
+- Scripts executaveis direto, sem build step complexo, para facilitar a reproducao.
+- Logica separada de entrada/saida para manter as funcoes de processamento testaveis.
+
+## Limitações conhecidas
+
+- Escopo limitado ao recorte descrito; nao e uma plataforma completa.
+- Depende de Python 3.x no ambiente de execucao.
+
+
+## Testes
 
 ```
-uv run pytest -q
+pytest
 ```
 
-Result: 12 passed in 0.29 s.
+## Licença
 
-Tests cover: SHA-256 hash determinism, detection of changes in any field, evidence file write and read, integrity verification (valid → passes; tampered hash or data → fails), port allocation, real connection capture on localhost, multiple connections, and context-manager usage.
+Distribuído sob a licenca MIT. Consulte o arquivo `LICENSE` do repositorio.
 
-### License
+## Autor
 
-MIT
-
-### Author
-
-Kelvin Oliveira
+Kelvin Oliveira, https://github.com/KelvinOliveiraCode
+Portfolio: https://kelvinoliveiracode.github.io/portfolio/

@@ -1,118 +1,98 @@
 # honeypot-portas-evidencia
 
-<div align="center">
-
 [English](README.en.md) · **Português (Brasil)**
 
-</div>
-
-[![Python 3](https://img.shields.io/badge/Python-3.x-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/) [![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=flat-square&logo=scikit-learn)](https://scikit-learn.org/) [![pandas](https://img.shields.io/badge/pandas-150458?style=flat-square&logo=pandas)](https://pandas.pydata.org/) [![pytest](https://img.shields.io/badge/pytest-0A9EDC?style=flat-square&logo=pytest)](https://docs.pytest.org/) [![MIT License](https://img.shields.io/badge/License-MIT-f4c430?style=flat-square)](LICENSE)
-
-### Projeto funcional ,  honeypot-portas-evidencia
-
----
+[![Python 3](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](#) [![pytest](https://img.shields.io/badge/pytest-12%20testes-0A9EDC?style=flat-square&logo=pytest)](#) [![MIT License](https://img.shields.io/badge/License-MIT-f4c430?style=flat-square)](LICENSE)
 
 ## O que é
 
-Projeto funcional ,  honeypot-portas-evidencia
+**Honeypot TCP** que escuta **portas falsas** em um alvo local e **grava evidência** de cada conexão (IP, porta, timestamp) com um **hash SHA-256 de integridade** — permitindo depois **verificar** se o log foi adulterado. É um laboratório educacional de segurança (defensiva) em Python puro.
 
----
+## ⚠️ Aviso de uso ético e legal
 
-## Início Rápido
+Use **apenas em próprios ambientes/redes controladas** e com autorização. Um honeypot registra conexões de quem se aproxima; capturar/registrar tráfego de terceiros sem permissão pode violar leis de privacidade/espionagem. Não use contra sistemas dos quais você não é responsável.
 
-```bash
-# Clone e entre
-git clone https://github.com/KelvinOliveiraCode/<repo>.git
-cd <repo>
+## Status
 
-# Instale dependências
-# Nenhum requirements.txt detectado
+Laboratório educacional de segurança, funcional e testado (12 testes).
 
-# Execute o projeto
-python main.py
+## Funcionalidades
 
-# Execute os testes
-pytest
+- **Servidor honeypot** (`honeypot.py`, classe `Honeypot`): escuta portas falsas e registra conexões.
+- **Evidência com hash SHA-256** (`evidence.py`): cada registro de conexão recebe um hash determinístico (ordem fixa de campos), permitindo **verificar a integridade** (`verify_log`).
+- **Log de evidência** (`EvidenceLog`): append + leitura de registros.
+- **CLI**: `honeypot-portas-evidencia --host ... --port ... --log ... [--timeout S]`.
+
+## Arquitetura
+
+Pacote `honeypot_portas_evidencia` com `honeypot.py` (servidor) e `evidence.py` (integridade/log). O honeypot grava cada conexão; o hash permite detectar adulteração posterior.
+
+```mermaid
+flowchart LR
+    CONEX[conexão TCP] --> HP[honeypot.py - escuta portas falsas]
+    HP --> EV[evidence.py - grava + hash SHA-256]
+    EV --> LOG[evidence.log]
+    VER[verify_log - confere integridade] --> LOG
 ```
 
-## Como funciona
+## Stack
 
-Estrutura limpa e modular com separação de responsabilidades.
+- Python ≥ 3.10, stdlib apenas (sockets, hashlib)
+- pytest (dev)
 
----
+## Estrutura do repositório
 
-## Capacidades
+```
+honeypot-portas-evidencia/
+├── pyproject.toml · BRIEF.md
+├── src/honeypot_portas_evidencia/
+│   ├── honeypot.py   # servidor honeypot
+│   └── evidence.py   # evidência + hash SHA-256
+├── tests/            # 12 testes
+└── LICENSE           # MIT
+```
 
-| Capacidade | Descrição |
-|------------|-------------|
-| Carregamento de Dados | Auto-download do TensorFlow creditcard.csv (284k transações) com cache local |
-| EDA e Visualização | Distribuição de classes, histogramas de Amount, heatmaps de correlação (matplotlib/seaborn) |
-| Pré-processamento | RobustScaler em Amount/Time, split estratificado, remoção de duplicatas |
-| Balanceamento | SMOTE oversampling (fallback: class_weight="balanced") |
-| Modelagem | LogisticRegression, RandomForest, ExtraTrees com RandomizedSearchCV (StratifiedKFold) |
-| Métricas | Accuracy, Precision, Recall, F1, ROC AUC, Specificity, Confusion Matrix |
-| Seleção | Score ponderado: Recall 40% + F1 30% + Precision 20% + Accuracy 10% |
-| Persistência | Serialização joblib para modelo, scaler e resultados completos |
+## Pré-requisitos e instalação
 
+Python ≥ 3.10.
 
----
+```bash
+pip install -e .
+```
 
+## Como executar
 
+```bash
+honeypot-portas-evidencia                       # escuta 127.0.0.1:2222, grava em evidence.log
+honeypot-portas-evidencia --port 8080 --log meu-evidence.log
+```
+(Defaults: `--host 127.0.0.1`, `--port 2222`, `--log evidence.log`, `--timeout 2.0`.)
 
----
+## Testes e qualidade
 
-## Perguntas Frequentes
+Comando real (verificado pelo agente):
 
-<details>
-<summary><strong>O que é este projeto?</strong></summary>
+```bash
+PYTHONPATH=src python -m pytest tests/
+# 12 passed
+```
 
-Um estudo/projeto em Python demonstrando conceitos fundamentais.
+## Decisões técnicas e trade-offs
 
-</details>
+- **Hash SHA-256 por registro**: integridade auditável e detectável de adulteração; sem criptografia, é um carimbo de autenticidade.
+- **Só stdlib**: leve e sem dependências; o custo é um honeypot simples (sem fingerprint de serviço real).
 
-<details>
-<summary><strong>Como executar?</strong></summary>
+## Limitações conhecidas e roadmap
 
-Veja [Início Rápido](#início-rápido) para comandos copiáveis.
+- Honeypot de portas falsas básico; não emula serviços reais (ex.: banner de SSH) para enganar scanners avançados.
+- Sem captura de payload, apenas metadados de conexão.
 
-</details>
+## Processo de desenvolvimento
 
-<details>
-<summary><strong>Há testes?</strong></summary>
+Projeto individual de Kelvin Oliveira, construído com agentes de IA orquestrados e revisado pelo autor. A evidência com hash e a revisão são do autor.
 
-Nenhum teste automatizado neste repositório.
+## Licença e autor
 
-</details>
+MIT — Copyright (c) 2026 Kelvin Rebelo de Oliveira.
 
-<details>
-<summary><strong>Posso usar em produção?</strong></summary>
-
-Este é um **projeto de estudo/portfólio**. Revise e endureça (auth, persistência, monitoramento, etc.) antes de usar em produção.
-
-</details>
-
-
-
----
-
-## Documentação
-
-- **Código-Fonte** ,  Navegue pelo diretório `src/` para detalhes de implementação
-- **Referência da API** ,  Docstrings inline + type hints
-- **Diagrama de Arquitetura** ,  Veja [architecture.mermaid](docs/architecture.mermaid) (se presente)
-- **Changelog** ,  [CHANGELOG.md](CHANGELOG.md) (se presente)
-- **Contribuindo** ,  [CONTRIBUTING.md](CONTRIBUTING.md) (se presente)
-
-## Licença
-
-[MIT](LICENSE) ,  Kelvin Oliveira
-
----
-
-<div align="center">
-
-**Construído com** · Python 3 + scikit-learn + pandas
-
-**Autor** · [Kelvin Oliveira](https://github.com/KelvinOliveiraCode) · [Portfolio](https://kelvinoliveiracode.github.io/portfolio/)
-
-</div>
+**Autor**: [Kelvin Oliveira](https://github.com/KelvinOliveiraCode) · [Portfólio](https://kelvinoliveiracode.github.io/portfolio/)

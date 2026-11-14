@@ -6,9 +6,9 @@
 
 ## What it is
 
-A **TCP honeypot** that listens on **fake ports** on a local target and **records evidence** of each connection (IP, port, timestamp) with a **SHA-256 integrity hash** — letting you later **verify** whether the log was tampered with. It is an educational (defensive) security lab in pure Python.
+A **TCP honeypot** that listens on **fake ports** on a local target and **records evidence** of each connection (IP, port, timestamp) with a **SHA-256 integrity hash**, letting you later **verify** whether the log was tampered with. It is an educational (defensive) security lab in pure Python.
 
-## ⚠️ Ethical and legal use warning
+## ️ Ethical and legal use warning
 
 Use it **only in your own controlled environments/networks and with authorization**. A honeypot records who approaches it; capturing/recording third-party traffic without permission may violate privacy/eavesdropping laws. Do not use it against systems you are not responsible for.
 
@@ -21,7 +21,7 @@ An educational security lab, working and tested (12 tests).
 - **Honeypot server** (`honeypot.py`, class `Honeypot`): listens on fake ports and records connections.
 - **SHA-256 evidence** (`evidence.py`): each connection record gets a deterministic hash (fixed field order), letting you **verify integrity** (`verify_log`).
 - **Evidence log** (`EvidenceLog`): append + read records.
-- **CLI**: `honeypot-portas-evidencia --host ... --port ... --log ... [--timeout S]`.
+- CLI: `honeypot-portas-evidencia --host ... --port ... --log ... [--timeout S]`.
 
 ## Architecture
 
@@ -42,7 +42,7 @@ flowchart LR
 
 ## Repository layout
 
-```
+```text
 honeypot-portas-evidencia/
 ├── pyproject.toml · BRIEF.md
 ├── src/honeypot_portas_evidencia/
@@ -79,8 +79,8 @@ PYTHONPATH=src python -m pytest tests/
 
 ## Technical decisions and trade-offs
 
-- **Per-record SHA-256 hash**: auditable integrity and detectable tampering; without encryption, it is an authenticity stamp.
-- **Stdlib only**: light and dependency-free; the cost is a simple honeypot (no real service fingerprinting).
+- Per-record SHA-256 hash: auditable integrity and detectable tampering; without encryption, it is an authenticity stamp.
+- Stdlib only: light and dependency-free; the cost is a simple honeypot (no real service fingerprinting).
 
 ## Known limitations and roadmap
 
@@ -93,6 +93,6 @@ An individual project by Kelvin Oliveira, built with orchestrated AI agents and 
 
 ## License and author
 
-MIT — Copyright (c) 2026 Kelvin Rebelo de Oliveira.
+MIT. Copyright (c) 2026 Kelvin Rebelo de Oliveira.
 
 **Author**: [Kelvin Oliveira](https://github.com/KelvinOliveiraCode) · [Portfolio](https://kelvinoliveiracode.github.io/portfolio/)

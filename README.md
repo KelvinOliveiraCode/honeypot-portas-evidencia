@@ -6,9 +6,9 @@
 
 ## O que é
 
-**Honeypot TCP** que escuta **portas falsas** em um alvo local e **grava evidência** de cada conexão (IP, porta, timestamp) com um **hash SHA-256 de integridade** — permitindo depois **verificar** se o log foi adulterado. É um laboratório educacional de segurança (defensiva) em Python puro.
+**Honeypot TCP** que escuta **portas falsas** em um alvo local e **grava evidência** de cada conexão (IP, porta, timestamp) com um **hash SHA-256 de integridade**, permitindo depois **verificar** se o log foi adulterado. É um laboratório educacional de segurança (defensiva) em Python puro.
 
-## ⚠️ Aviso de uso ético e legal
+## ️ Aviso de uso ético e legal
 
 Use **apenas em próprios ambientes/redes controladas** e com autorização. Um honeypot registra conexões de quem se aproxima; capturar/registrar tráfego de terceiros sem permissão pode violar leis de privacidade/espionagem. Não use contra sistemas dos quais você não é responsável.
 
@@ -21,7 +21,7 @@ Laboratório educacional de segurança, funcional e testado (12 testes).
 - **Servidor honeypot** (`honeypot.py`, classe `Honeypot`): escuta portas falsas e registra conexões.
 - **Evidência com hash SHA-256** (`evidence.py`): cada registro de conexão recebe um hash determinístico (ordem fixa de campos), permitindo **verificar a integridade** (`verify_log`).
 - **Log de evidência** (`EvidenceLog`): append + leitura de registros.
-- **CLI**: `honeypot-portas-evidencia --host ... --port ... --log ... [--timeout S]`.
+- CLI: `honeypot-portas-evidencia --host ... --port ... --log ... [--timeout S]`.
 
 ## Arquitetura
 
@@ -42,7 +42,7 @@ flowchart LR
 
 ## Estrutura do repositório
 
-```
+```text
 honeypot-portas-evidencia/
 ├── pyproject.toml · BRIEF.md
 ├── src/honeypot_portas_evidencia/
@@ -79,8 +79,8 @@ PYTHONPATH=src python -m pytest tests/
 
 ## Decisões técnicas e trade-offs
 
-- **Hash SHA-256 por registro**: integridade auditável e detectável de adulteração; sem criptografia, é um carimbo de autenticidade.
-- **Só stdlib**: leve e sem dependências; o custo é um honeypot simples (sem fingerprint de serviço real).
+- Hash SHA-256 por registro: integridade auditável e detectável de adulteração; sem criptografia, é um carimbo de autenticidade.
+- Só stdlib: leve e sem dependências; o custo é um honeypot simples (sem fingerprint de serviço real).
 
 ## Limitações conhecidas e roadmap
 
@@ -93,6 +93,6 @@ Projeto individual de Kelvin Oliveira, construído com agentes de IA orquestrado
 
 ## Licença e autor
 
-MIT — Copyright (c) 2026 Kelvin Rebelo de Oliveira.
+MIT. Copyright (c) 2026 Kelvin Rebelo de Oliveira.
 
 **Autor**: [Kelvin Oliveira](https://github.com/KelvinOliveiraCode) · [Portfólio](https://kelvinoliveiracode.github.io/portfolio/)
